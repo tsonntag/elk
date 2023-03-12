@@ -1,4 +1,4 @@
-defmodule App do
+defmodule Elk.App do
   @moduledoc """
   Elk consists of
     * a "runtime" which handles side effects e.g. http, timer, file io
