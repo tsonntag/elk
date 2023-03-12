@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tag=$1
+commit=$2
+
+echo $tag
+git tag $tag
+git add *
+git commit -m "$commit"
+git push origin --tags

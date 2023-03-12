@@ -39,9 +39,11 @@ defmodule Elk do
 
   @impl true
   def handle_call({:init, args}, from, {app, _model = nil}) do
+    Logger.debug("init #{args}")
     model =
       case apply(app, :init, [args]) do
         {model, cmds} ->
+          Logger.debug("init cmds: #{cmds}")
           call(from, cmds)
           model
 
