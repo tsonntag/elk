@@ -1,23 +1,17 @@
 defmodule Elk.HttpClient do
+  alias Elk.Http
 
-  defmodule Ok do
-    defstruct [:body]
-  end
-
-  defmodule Error do
-    defstruct [:body, :status_code, :reason]
-  end
-
-  @spec get(String.t()) :: %Ok{} | %Error{}
+  @spec get(String.t()) :: %Http.Ok{} | %Http.Error{}
   def get(url) do
     case HTTPoison.get(url) do
-       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-          %Ok{body: body}
+      {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
+        %Http.Ok{body: body}
 
-       {:ok, %HTTPoison.Response{body: body, status_code: status_code}  } ->
-          %Error{body: body, status_code: status_code}
+      {:ok, %HTTPoison.Response{body: body, status_code: status_code}} ->
+        %Http.Error{body: body, status_code: status_code}
 
-      {:error, %HTTPoison.Error{reason: reason}} -> %Error{reason: reason}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        %Http.Error{reason: reason}
     end
   end
 end

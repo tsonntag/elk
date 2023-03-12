@@ -34,18 +34,21 @@ defmodule Elk do
 
   @impl true
   def init(app) do
-    {:ok, {app, _model = nil} }
+    {:ok, {app, _model = nil}}
   end
 
   @impl true
   def handle_call({:init, args}, from, {app, _model = nil}) do
-    model = case apply(app, :init, [args]) do
-      { model, cmds } ->
-        call(from, cmds)
-        model
+    model =
+      case apply(app, :init, [args]) do
+        {model, cmds} ->
+          call(from, cmds)
+          model
 
-      model -> model
-    end
+        model ->
+          model
+      end
+
     {:noreply, {app, model}}
   end
 
@@ -72,12 +75,16 @@ defmodule Elk do
   #### private
 
   defp update_model({app, model}, from, msg) do
-    model = case apply(app, :update, [model, msg]) do
-      { model, cmds } ->
-        call(from, cmds)
-        model
-      model -> model
-    end
+    model =
+      case apply(app, :update, [model, msg]) do
+        {model, cmds} ->
+          call(from, cmds)
+          model
+
+        model ->
+          model
+      end
+
     {:noreply, {app, model}}
   end
 
